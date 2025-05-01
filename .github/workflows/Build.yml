@@ -75,7 +75,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Pack with new version
-        run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.get_version.outputs.new_version }}
+        run: dotnet pack ./CommandFlowEngine/CommandFlowEngine.csproj --configuration Release /p:PackageVersion=${{ steps.get_version.outputs.new_version }} --output ./nupkg 
 
       - name: Push NuGet package
-        run: dotnet nuget push ./bin/Release/CommandFlowEngine.${{ steps.get_version.outputs.new_version }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push ./nupkg/CommandFlowEngine.${{ steps.get_version.outputs.new_version }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
