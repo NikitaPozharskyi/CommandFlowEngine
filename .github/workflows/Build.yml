@@ -44,22 +44,30 @@ jobs:
         id: get_version
         run: |
           PACKAGE_ID=CommandFlowEngine
-          RESPONSE=$(curl -s https://api.nuget.org/v3-flatcontainer/$PACKAGE_ID/index.json)
-          VERSIONS=$(echo "$RESPONSE" | jq -r '.versions // empty')
-          
-          if [ -z "$VERSIONS" ] || [ "$VERSIONS" = "null" ]; then
-            echo "No previous versions found. Starting with 1.0.0."
+          RESPONSE=$(curl -s -w "%{http_code}" -o temp.json https://api.nuget.org/v3-flatcontainer/$PACKAGE_ID/index.json)
+          HTTP_CODE="${RESPONSE: -3}"
+          CONTENT=$(cat temp.json)
+
+          if [ "$HTTP_CODE" -eq "404" ]; then
+            echo "No previous versions found (404). Starting with 1.0.0."
             NEW_VERSION="1.0.0"
           else
-            LATEST_VERSION=$(echo "$VERSIONS" | jq -r '.[-1]')
-            echo "Latest version: $LATEST_VERSION"
-            IFS='.' read -r major minor patch <<< "$LATEST_VERSION"
-            NEW_VERSION="$major.$minor.$((patch + 1))"
-            echo "Next version: $NEW_VERSION"
+            VERSIONS=$(echo "$CONTENT" | jq -r '.versions // empty')
+            if [ -z "$VERSIONS" ] || [ "$VERSIONS" = "null" ]; then
+              echo "No previous versions found in JSON. Starting with 1.0.0."
+              NEW_VERSION="1.0.0"
+            else
+              LATEST_VERSION=$(echo "$VERSIONS" | jq -r '.[-1]')
+              echo "Latest version: $LATEST_VERSION"
+              IFS='.' read -r major minor patch <<< "$LATEST_VERSION"
+              NEW_VERSION="$major.$minor.$((patch + 1))"
+              echo "Next version: $NEW_VERSION"
+            fi
           fi
 
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-
+      
+      
       - name: Restore dependencies
         run: dotnet restore
 
