@@ -21,7 +21,6 @@ It is designed to help developers manage asynchronous, non-sequential user reque
 ### 1️⃣ Install
 
 ```bash
-# (Example; adjust once published as a NuGet package)
 dotnet add package CommandFlowEngine
 ```
 ### 2️⃣ Define a Command
@@ -48,7 +47,15 @@ public class OrderWorkflow : IWorkflow
 }
 ```
 
-### 4️⃣ Wire It Up
+### 4️⃣ Setup DI
+```bash
+  services.AddCommandRegistry<long>(ServiceLifetime.Scoped);
+  services
+      .RegisterCommand<StartOrderCommand>("order", ServiceLifetime.Scoped)
+      .RegisterWorkflow<OrderWorkflow>()
+```
+
+### 5️⃣ Wire It Up
 ```bash
 var workflow = new OrderWorkflow();
 var handler = new RequestHandler(workflow);
@@ -69,10 +76,10 @@ public class MongoStateStore : IStateStore
 ```
 
 ## 💡 Why Use This?
-✅ Simplifies the orchestration of multi-step workflows
-✅ Enables pluggable state management (volatile or persistent)
-✅ Keeps your architecture clean and testable
-✅ Ideal for chatbots, transactional services, and stateful APIs
+- Simplifies the orchestration of multi-step workflows
+- Enables pluggable state management (volatile or persistent)
+- Keeps your architecture clean and testable
+- Ideal for chatbots, transactional services, and stateful APIs
 
 ## 🔧 Roadmap
 - Built-in support for persistence adapters (MongoDB, SQL, etc.)
