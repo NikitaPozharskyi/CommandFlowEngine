@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandWorkflows.Infrastructure", "CommandWorkflows.Infrastructure\CommandWorkflows.Infrastructure.csproj", "{C3141379-272C-40AF-904E-26AF657DB542}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandFlowEngine", "CommandFlowEngine\CommandFlowEngine.csproj", "{C3141379-272C-40AF-904E-26AF657DB542}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandWorkflows.TestApplication", "CommandWorkflows.TestApplication\CommandWorkflows.TestApplication.csproj", "{D2F1D9E9-A2F0-4B76-AC4F-DD85602170ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandFlowEngine.TestApplication", "CommandFlowEngine.TestApplication\CommandFlowEngine.TestApplication.csproj", "{D2F1D9E9-A2F0-4B76-AC4F-DD85602170ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandFlowEngine.Tests", "CommandFlowEngine.Tests\CommandFlowEngine.Tests.csproj", "{065ACC0E-6E01-4D1E-9B2A-C3872B56675C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{D2F1D9E9-A2F0-4B76-AC4F-DD85602170ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2F1D9E9-A2F0-4B76-AC4F-DD85602170ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2F1D9E9-A2F0-4B76-AC4F-DD85602170ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{065ACC0E-6E01-4D1E-9B2A-C3872B56675C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{065ACC0E-6E01-4D1E-9B2A-C3872B56675C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{065ACC0E-6E01-4D1E-9B2A-C3872B56675C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{065ACC0E-6E01-4D1E-9B2A-C3872B56675C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
