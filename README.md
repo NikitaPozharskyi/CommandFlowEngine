@@ -1,12 +1,84 @@
-# CommandWorkflows.Infrastructure
-This library provides tools for handling sequential user requests in non-sequential systems, such as Telegram bots or HTTP-based applications. 
-It allows for extending functionalities with minimal overhead, offering reusable workflows that can be shared across multiple commands.
+# CommandFlowEngine
 
-Technically, the library utilizes in-memory state to track and recognize previous user requests in its default implementation. 
-It also provides interfaces for external communication, enabling sequential request handling to be managed outside the application state using various storage mechanisms.
+**CommandFlowEngine** is a flexible .NET library for orchestrating command-based workflows with pluggable state management and optional persistence.
 
-This solution is ideal for scenarios where predefined actions need to be performed based on user interactions, leveraging workflows to streamline the process. 
-It integrates seamlessly with dependency injection (DI) to register commands and workflows, ensuring they are injected into the appropriate places within the request handler. 
-Commands can be defined and workflows attached to them via ServiceProvider extension methods, establishing a strict, ordered execution of system actions based on user input.
+It is designed to help developers manage asynchronous, non-sequential user requests in a clean and modular way. Whether you're building a chatbot, an interactive app, or a distributed service, this library gives you the tools to keep your flow logic consistent and testable.
 
-exaple of using this library can be found in TestApplication
+---
+
+## ✨ Features
+
+- **Command & Workflow Interfaces:** Define modular, composable workflows using `ICommand` and `IWorkflow`.
+- **Pluggable State Handling:** Use the built-in in-memory store or implement your own persistence layer (e.g., MongoDB) to support durable workflows.
+- **Error-Resilient:** Designed to recover and continue workflows even after service restarts (with your custom state store).
+- **Decoupled Design:** Keeps business logic separate from infrastructure concerns.
+- **Lightweight & Extensible:** No unnecessary dependencies; easily integrates into existing projects.
+
+---
+
+## 🚀 Getting Started
+
+### 1️⃣ Install
+
+```bash
+# (Example; adjust once published as a NuGet package)
+dotnet add package CommandFlowEngine
+```
+2️⃣ Define a Command
+```bash
+public class StartOrderCommand : ICommand
+{
+    public string OrderId { get; set; }
+    public string CustomerId { get; set; }
+}
+```
+
+3️⃣ Define a Workflow
+```bash
+public class OrderWorkflow : IWorkflow
+{
+    public async Task HandleAsync(ICommand command, CancellationToken cancellationToken)
+    {
+        if (command is StartOrderCommand startOrder)
+        {
+            // Handle starting an order
+            Console.WriteLine($"Starting order {startOrder.OrderId} for customer {startOrder.CustomerId}");
+        }
+    }
+}
+```
+
+4️⃣ Wire It Up
+```bash
+var workflow = new OrderWorkflow();
+var handler = new RequestHandler(workflow);
+
+await handler.HandleAsync(new StartOrderCommand { OrderId = "123", CustomerId = "456" }, CancellationToken.None);
+```
+
+🧩 Extending Persistence
+By default, the library uses in-memory state, but you can plug in your own persistence layer (e.g., MongoDB, Redis, SQL) to make workflows durable across restarts.
+
+Example of your own IStateStore implementation (interface not included by default):
+
+```bash
+public class MongoStateStore : IStateStore
+{
+    // Implement saving and loading state from MongoDB
+}
+```
+
+💡 Why Use This?
+✅ Simplifies the orchestration of multi-step workflows
+✅ Enables pluggable state management (volatile or persistent)
+✅ Keeps your architecture clean and testable
+✅ Ideal for chatbots, transactional services, and stateful APIs
+
+🔧 Roadmap
+- Built-in support for persistence adapters (MongoDB, SQL, etc.)
+- Enhanced error handling & retries
+- NuGet packaging
+- Sample projects
+
+ 🤝 Contributing
+PRs and ideas are welcome! Feel free to open an issue or submit a pull request.
