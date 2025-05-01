@@ -24,7 +24,7 @@ It is designed to help developers manage asynchronous, non-sequential user reque
 # (Example; adjust once published as a NuGet package)
 dotnet add package CommandFlowEngine
 ```
-2️⃣ Define a Command
+### 2️⃣ Define a Command
 ```bash
 public class StartOrderCommand : ICommand
 {
@@ -33,7 +33,7 @@ public class StartOrderCommand : ICommand
 }
 ```
 
-3️⃣ Define a Workflow
+### 3️⃣ Define a Workflow
 ```bash
 public class OrderWorkflow : IWorkflow
 {
@@ -48,7 +48,7 @@ public class OrderWorkflow : IWorkflow
 }
 ```
 
-4️⃣ Wire It Up
+### 4️⃣ Wire It Up
 ```bash
 var workflow = new OrderWorkflow();
 var handler = new RequestHandler(workflow);
@@ -56,7 +56,7 @@ var handler = new RequestHandler(workflow);
 await handler.HandleAsync(new StartOrderCommand { OrderId = "123", CustomerId = "456" }, CancellationToken.None);
 ```
 
-🧩 Extending Persistence
+## 🧩 Extending Persistence
 By default, the library uses in-memory state, but you can plug in your own persistence layer (e.g., MongoDB, Redis, SQL) to make workflows durable across restarts.
 
 Example of your own IStateStore implementation (interface not included by default):
@@ -68,17 +68,17 @@ public class MongoStateStore : IStateStore
 }
 ```
 
-💡 Why Use This?
+## 💡 Why Use This?
 ✅ Simplifies the orchestration of multi-step workflows
 ✅ Enables pluggable state management (volatile or persistent)
 ✅ Keeps your architecture clean and testable
 ✅ Ideal for chatbots, transactional services, and stateful APIs
 
-🔧 Roadmap
+## 🔧 Roadmap
 - Built-in support for persistence adapters (MongoDB, SQL, etc.)
 - Enhanced error handling & retries
 - NuGet packaging
 - Sample projects
 
- 🤝 Contributing
+## 🤝 Contributing
 PRs and ideas are welcome! Feel free to open an issue or submit a pull request.
