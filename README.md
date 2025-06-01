@@ -57,10 +57,11 @@ public class OrderWorkflow : IWorkflow
 
 ### 5️⃣ Wire It Up
 ```bash
-var workflow = new OrderWorkflow();
-var handler = new RequestHandler(workflow);
 
-await handler.HandleAsync(new StartOrderCommand { OrderId = "123", CustomerId = "456" }, CancellationToken.None);
+var result3 = await _commandExecutor.ExecuteCommandAsync<MyCustomRequest, MyCustomResponse>(new MyCustomRequest
+{
+    Message = testCommand3
+}, 1234);
 ```
 
 ## 🧩 Extending Persistence
